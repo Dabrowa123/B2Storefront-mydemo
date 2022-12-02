@@ -10,13 +10,25 @@ import { getProductPath, getCategoryPath } from '@b2storefront/b2s_core/dist/uti
 import { Link } from 'gatsby'
 import { css } from '@emotion/react'
 
+
 /**
  * @param {ProductPageTmpl.propTypes} props
  **/
+
 const ProductPageTmpl = (props) => {
   useCustomJavascript(() => {
     new Glide('.glide').mount()
   })
+ 
+
+  // Extracting ids from string into array & emoving letters 
+  const upsell_product_ids = JSON.parse(props.product.metafields["b2s.upsell_for_product"].value)
+    .map(item => item.replace( /^\D+/g, ''))
+
+  // Filter products from allProducts by id
+  const upsell_products = props.allProducts.filter(item => upsell_product_ids.includes(item.id))
+
+  console.log(upsell_products)
 
   return (
     <Layout>
